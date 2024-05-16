@@ -13,8 +13,6 @@ function renderBooks(books) {
     document.querySelector("[data-list-items]").appendChild(fragment);
   }
 
-const starting = document.createDocumentFragment()
-
 
 //Creates element to display the books on screen as a button with and image, title and author.
 function createBookElement ({ author, id, image, title }) {
@@ -34,25 +32,26 @@ function createBookElement ({ author, id, image, title }) {
         </div>
     `
 
-    return element;
+    return element; //Return to provide the created element back to the caller for flexible use
 }
 
-document.querySelector('[data-list-items]').appendChild(starting)
+//Gives out the list of genres
 
-const genreHtml = document.createDocumentFragment()
-const firstGenreElement = document.createElement('option')
-firstGenreElement.value = 'any'
-firstGenreElement.innerText = 'All Genres'
-genreHtml.appendChild(firstGenreElement)
+function renderGenres() {
+    const genreHtml = document.createDocumentFragment()
+    const firstGenreElement = document.createOptionElement("All Genres", "any")
+    genreHtml.appendChild(firstGenreElement);
 
-for (const [id, name] of Object.entries(genres)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
-    genreHtml.appendChild(element)
+    for (const [id, name] of Object.entries(genres)) {
+        const element = document.createOptionElement(name, id)
+        genreHtml.appendChild(element)
+
 }
 
-document.querySelector('[data-search-genres]').appendChild(genreHtml)
+document.querySelector('[data-list-items]').appendChild(genreHtml)
+}
+
+
 
 const authorsHtml = document.createDocumentFragment()
 const firstAuthorElement = document.createElement('option')
@@ -253,4 +252,5 @@ document.querySelector('[data-list-items]').addEventListener('click', (event) =>
     }
 })
 
-renderBooks(matches.slice(0, BOOKS_PER_PAGE))
+renderBooks(matches.slice(0, BOOKS_PER_PAGE)) //Function call to display the preview
+renderGenres()
