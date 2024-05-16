@@ -65,10 +65,10 @@ for (const [id, name] of Object.entries(authors)) {
 
 document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 }
-//Theme ternery operator
 
+//Theme setting simplified into ternery operators
 
-function toggleTheme(theme) {
+function applyTheme(theme) {
     const isDark = theme === "night";
     document.querySelector("[data-settings-theme]").value = theme;
     document.documentElement.style.setProperty(
@@ -80,6 +80,31 @@ function toggleTheme(theme) {
       isDark ? "10, 10, 20" : "255, 255, 255"
     );
   } 
+
+
+  //Filters that group the books according to title, genre and author to enable to user the search them respectively.
+
+  function applyFilters(formData) {
+    const filters = Object.fromEntries(formData);
+    return books.filter((book) => {
+      let genreMatch = filters.genre === "any";
+  
+      for (const singleGenre of book.genres) {
+        if (genreMatch) break;
+        if (singleGenre === filters.genre) {
+          genreMatch = true;
+        }
+      }
+  
+      return (
+        (filters.title.trim() === "" ||
+          book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
+        (filters.author === "any" || book.author === filters.author) &&
+        genreMatch
+      );
+    });
+  }
+  
 
 
 document.querySelector('[data-list-button]').innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
