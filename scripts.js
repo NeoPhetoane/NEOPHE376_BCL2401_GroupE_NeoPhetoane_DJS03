@@ -52,20 +52,19 @@ document.querySelector('[data-list-items]').appendChild(genreHtml)
 }
 
 
-
+//Author distributor
+function renderAuthor() {
 const authorsHtml = document.createDocumentFragment()
-const firstAuthorElement = document.createElement('option')
-firstAuthorElement.value = 'any'
-firstAuthorElement.innerText = 'All Authors'
+const firstAuthorElement = document.createOptionElement("All authors", "any")
 authorsHtml.appendChild(firstAuthorElement)
 
 for (const [id, name] of Object.entries(authors)) {
-    const element = document.createElement('option')
-    element.value = id
-    element.innerText = name
+    const element = document.createOptionElement(name, id)
     authorsHtml.appendChild(element)
 }
 
+document.querySelector("[data-search-authors]").appendChild(authorsHtml);
+}
 //Theme ternery operator
 
 
@@ -252,5 +251,6 @@ document.querySelector('[data-list-items]').addEventListener('click', (event) =>
     }
 })
 
-renderBooks(matches.slice(0, BOOKS_PER_PAGE)) //Function call to display the preview
-renderGenres()
+renderBooks(matches.slice(0, BOOKS_PER_PAGE)) ;//Function call to display the preview
+renderGenres();
+renderAuthor();
