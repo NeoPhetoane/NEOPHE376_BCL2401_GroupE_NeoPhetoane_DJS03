@@ -90,9 +90,8 @@ function applyTheme(theme) {
 
 //Filters that group the books according to title, genre and author to enable to user the search them respectively.
 
-function applyFilters(formData) {
-  const filters = Object.fromEntries(formData);
-  return books.filter((book) => {
+function filterBooks(books, filters) {
+  const filteredBooks = books.filter((book) => {
     let genreMatch = filters.genre === "any";
 
     for (const singleGenre of book.genres) {
@@ -109,6 +108,8 @@ function applyFilters(formData) {
       genreMatch
     );
   });
+
+  return filteredBooks;
 }
 
 //Show more button function
@@ -186,24 +187,9 @@ document
     event.preventDefault();
     const formData = new FormData(event.target)
     const filters = Object.fromEntries(formData)
-    const result = []
+    const result = filterBooks(books, filters);
 
-    for (const book of books) {
-        let genreMatch = filters.genre === 'any'
 
-        for (const singleGenre of book.genres) {
-            if (genreMatch) break;
-            if (singleGenre === filters.genre) { genreMatch = true }
-        }
-
-        if (
-            (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) && 
-            (filters.author === 'any' || book.author === filters.author) && 
-            genreMatch
-        ) {
-            result.push(book)
-        }
-    }
 
     page = 1;
     matches = result
